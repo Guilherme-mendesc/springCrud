@@ -21,20 +21,20 @@ import models.EmployeeModel;
 import repositorys.EmployeeRepository;
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping(path="/macaxeira", value="/macaxeira")
 public class EmployeeController {
 	
 	@Autowired
 	EmployeeRepository employeeRepository;
 	
-	@PostMapping("/employee")
+	@PostMapping(value="/employee")
 	public ResponseEntity<EmployeeModel> saveEmployee(@RequestBody @Valid EmployeeRecordDto employeeRecordDto){
 		var employeeModel = new EmployeeModel();
 		BeanUtils.copyProperties(employeeRecordDto, employeeModel);
 		return ResponseEntity.status(HttpStatus.CREATED).body(employeeRepository.save(employeeModel));
 	}
 	
-	@GetMapping("/employee")
+	@GetMapping(path="/employee", produces="application/json")
 	public ResponseEntity<List<EmployeeModel>> getAllEmployees(){
 		List<EmployeeModel> employeeList = employeeRepository.findAll();
 		if(!employeeList.isEmpty()) {
@@ -46,7 +46,7 @@ public class EmployeeController {
 		return ResponseEntity.status(HttpStatus.OK).body(employeeList);
 	}
 	
-	@GetMapping("/employee/{id}")
+	@GetMapping(value="/employee/{id}")
 	public ResponseEntity<Object> getOneEmployee(@PathVariable(value="id") UUID id){
 		Optional<EmployeeModel> employe0= employeeRepository.findById(id);
 		if(employe0.isEmpty()) {
@@ -56,7 +56,7 @@ public class EmployeeController {
 			return ResponseEntity.status(HttpStatus.OK).body(employe0.get());
 	}
 	
-	@PutMapping("/employee/{id}")
+	@PutMapping(value="/employee/{id}")
 	public ResponseEntity<Object> updateEmployee(@PathVariable(value="id") UUID id, @RequestBody
 													@Valid EmployeeRecordDto employeeRecordDto){
 		Optional<EmployeeModel> employe0= employeeRepository.findById(id);
@@ -68,7 +68,7 @@ public class EmployeeController {
 			return ResponseEntity.status(HttpStatus.OK).body(employe0.get());
 	}
 	
-	@DeleteMapping("/employee/{id}")
+	@DeleteMapping(value="/employee/{id}")
 	public ResponseEntity<Object> deleteteEmployee(@PathVariable(value="id") UUID id){
 		Optional<EmployeeModel> employe0= employeeRepository.findById(id);
 		if(employe0.isEmpty()) {
